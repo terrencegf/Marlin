@@ -1065,7 +1065,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 30, 0, -1.7 }  // TGF - orig { 40, 10, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { 30, 0, 0 }  // TGF - orig { 40, 10, 0 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1467,7 +1467,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 4  // TGF - orig 5
+  #define GRID_MAX_POINTS_X 5  // TGF - mine was 4
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
