@@ -200,13 +200,11 @@ public:
 
   #if HAS_MULTI_LANGUAGE
     static uint8_t language;
-    static inline void set_language(const uint8_t lang) {
-      if (lang < NUM_LANGUAGES) {
-        language = lang;
-        return_to_status();
-        refresh();
-      }
-    }
+    static void set_language(const uint8_t lang);
+  #endif
+
+  #if HAS_MARLINUI_U8GLIB
+    static void update_language_font();
   #endif
 
   #if ENABLED(SOUND_MENU_ITEM)
@@ -298,6 +296,17 @@ public:
   #endif
 
   #if HAS_STATUS_MESSAGE
+
+    #if HAS_WIRED_LCD
+      #if ENABLED(STATUS_MESSAGE_SCROLLING)
+        #define MAX_MESSAGE_LENGTH _MAX(LONG_FILENAME_LENGTH, MAX_LANG_CHARSIZE * 2 * (LCD_WIDTH))
+      #else
+        #define MAX_MESSAGE_LENGTH (MAX_LANG_CHARSIZE * (LCD_WIDTH))
+      #endif
+    #else
+      #define MAX_MESSAGE_LENGTH 63
+    #endif
+
     static char status_message[];
     static uint8_t alert_level; // Higher levels block lower levels
 
