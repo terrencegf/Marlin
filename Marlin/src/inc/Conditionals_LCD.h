@@ -241,7 +241,7 @@
   #define LCD_ST7920_DELAY_2           125
   #define LCD_ST7920_DELAY_3           125
 
-#elif ENABLED(ANET_FULL_GRAPHICS_LCD, ANET_FULL_GRAPHICS_LCD_ALT_WIRING)
+#elif EITHER(ANET_FULL_GRAPHICS_LCD, ANET_FULL_GRAPHICS_LCD_ALT_WIRING)
 
   #define IS_RRD_FG_SC 1
   #define LCD_ST7920_DELAY_1           150
@@ -498,6 +498,20 @@
 #endif
 #if EITHER(HAS_DWIN_E3V2_BASIC, DWIN_CREALITY_LCD_JYERSUI)
   #define HAS_DWIN_E3V2 1
+#endif
+
+// E3V2 extras
+#if HAS_DWIN_E3V2 || IS_DWIN_MARLINUI
+  #define SERIAL_CATCHALL 0
+  #ifndef LCD_SERIAL_PORT
+    #if MB(BTT_SKR_MINI_E3_V1_0, BTT_SKR_MINI_E3_V1_2, BTT_SKR_MINI_E3_V2_0, BTT_SKR_E3_TURBO)
+      #define LCD_SERIAL_PORT 1
+    #else
+      #define LCD_SERIAL_PORT 3 // Creality 4.x board
+    #endif
+  #endif
+  #define HAS_LCD_BRIGHTNESS 1
+  #define LCD_BRIGHTNESS_MAX 250
 #endif
 
 #if IS_ULTRA_LCD
@@ -931,7 +945,10 @@
   #if DISABLED(NOZZLE_AS_PROBE)
     #define HAS_PROBE_XY_OFFSET 1
   #endif
-  #if DISABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN) && !BOTH(DELTA, SENSORLESS_PROBING)
+  #if BOTH(DELTA, SENSORLESS_PROBING)
+    #define HAS_DELTA_SENSORLESS_PROBING 1
+  #endif
+  #if NONE(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN, HAS_DELTA_SENSORLESS_PROBING)
     #define USES_Z_MIN_PROBE_PIN 1
   #endif
   #if Z_HOME_TO_MIN && TERN1(USES_Z_MIN_PROBE_PIN, ENABLED(USE_PROBE_FOR_Z_HOMING))
@@ -1058,7 +1075,7 @@
 #if ANY(MORGAN_SCARA, MP_SCARA, AXEL_TPARA)
   #define IS_SCARA 1
   #define IS_KINEMATIC 1
-#elif ENABLED(DELTA)
+#elif EITHER(DELTA, POLARGRAPH)
   #define IS_KINEMATIC 1
 #else
   #define IS_CARTESIAN 1
@@ -1106,17 +1123,6 @@
 #endif
 #if SERIAL_PORT_2 == -2
   #define HAS_ETHERNET 1
-#endif
-
-#if EITHER(HAS_DWIN_E3V2, IS_DWIN_MARLINUI)
-  #define SERIAL_CATCHALL 0
-  #ifndef LCD_SERIAL_PORT
-    #if MB(BTT_SKR_MINI_E3_V1_0, BTT_SKR_MINI_E3_V1_2, BTT_SKR_MINI_E3_V2_0, BTT_SKR_E3_TURBO)
-      #define LCD_SERIAL_PORT 1
-    #else
-      #define LCD_SERIAL_PORT 3 // Creality 4.x board
-    #endif
-  #endif
 #endif
 
 // Fallback Stepper Driver types that don't depend on Configuration_adv.h
@@ -1357,6 +1363,9 @@
 
 // This emulated DOGM has 'touch/xpt2046', not 'tft/xpt2046'
 #if ENABLED(TOUCH_SCREEN)
+  #if TOUCH_IDLE_SLEEP
+    #define HAS_TOUCH_SLEEP 1
+  #endif
   #if NONE(TFT_TOUCH_DEVICE_GT911, TFT_TOUCH_DEVICE_XPT2046)
     #define TFT_TOUCH_DEVICE_XPT2046          // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
   #endif
