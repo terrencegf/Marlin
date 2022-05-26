@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Optional command line argument 'update'
-#if [[ -n $1 && $1 == 'update' ]] ; then
-    pio update
-#fi
+if [[ -n $1 && $1 == 'update' ]] ; then
+    pio upgrade
+    pio pkg update
+fi
 
 DATE=`date +%F_%H-%M`
 platformio run -e rambo
