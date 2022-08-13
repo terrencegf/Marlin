@@ -294,8 +294,6 @@ def extract():
 							'sid': sid
 						}
 
-						if val != '': define_info['value'] = val
-
 						# Type is based on the value
 						if val == '':
 							value_type = 'switch'
@@ -318,6 +316,7 @@ def extract():
 									else 'array'	if val[0] == '{' \
 									else ''
 
+						if val != '': define_info['value'] = val
 						if value_type != '': define_info['type'] = value_type
 
 						# Join up accumulated conditions with &&
@@ -393,8 +392,12 @@ def main():
 		except ImportError:
 			print("Installing YAML module ...")
 			import subprocess
-			subprocess.run(['python3', '-m', 'pip', 'install', 'pyyaml'])
-			import yaml
+			try:
+				subprocess.run(['python3', '-m', 'pip', 'install', 'pyyaml'])
+				import yaml
+			except:
+				print("Failed to install YAML module")
+				return
 
 		print("Generating YML ...")
 		dump_yaml(schema, Path('schema.yml'))
