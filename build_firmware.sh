@@ -9,5 +9,5 @@ fi
 DATE=`date +%F_%H-%M`
 platformio run -e rambo
 scp -o port=9222 .pio/build/rambo/firmware.hex \
-    tfleury@192.168.0.2:/cygdrive/c/xfer/firmware-${DATE}.hex
+    tfleury@yak.fleury.tv:/cygdrive/c/xfer/firmware-${DATE}.hex
 pio system prune -f
