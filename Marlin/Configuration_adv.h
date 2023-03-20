@@ -397,6 +397,7 @@
    * thermal malfunction. Check the temperature graph in your host for any unusual bumps.
    */
   //#define THERMAL_PROTECTION_VARIANCE_MONITOR
+  #define NO_VARIANCE_MONITOR_WARNING
   #if ENABLED(THERMAL_PROTECTION_VARIANCE_MONITOR)
     // Variance detection window to override the THERMAL_PROTECTION...PERIOD settings above.
     // Keep in mind that some heaters heat up faster than others.
