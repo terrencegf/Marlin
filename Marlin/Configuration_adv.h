@@ -196,8 +196,6 @@
  */
 //#define HEPHESTOS2_HEATED_BED_KIT
 #if ENABLED(HEPHESTOS2_HEATED_BED_KIT)
-  #undef TEMP_SENSOR_BED
-  #define TEMP_SENSOR_BED 70
   #define HEATER_BED_INVERTING true
 #endif
 
@@ -390,7 +388,7 @@
    *
    * A very stable heater might produce a false positive and halt the printer. In this case, try increasing
    * the corresponding THERMAL_PROTECTION_*_PERIOD constant a bit. Keep in mind that uncontrolled heating
-   * shouldn't be allowed to persist for more than a minite or two.
+   * shouldn't be allowed to persist for more than a minute or two.
    *
    * Be careful to distinguish false positives from real sensor issues before disabling this feature. If the
    * heater's temperature appears even slightly higher than expected after restarting, you may have a real
@@ -1149,19 +1147,20 @@
 
 /**
  * Idle Stepper Shutdown
- * Enable DISABLE_INACTIVE_* to shut down axis steppers after an idle period.
- * The Deactive Time can be overridden with M18 and M84. Set to 0 for No Timeout.
+ * Enable DISABLE_IDLE_* to shut down axis steppers after an idle period.
+ * The default timeout duration can be overridden with M18 and M84. Set to 0 for No Timeout.
  */
-#define DEFAULT_STEPPER_DEACTIVE_TIME 120
-#define DISABLE_INACTIVE_X
-#define DISABLE_INACTIVE_Y
-#define DISABLE_INACTIVE_Z  // Disable if the nozzle could fall onto your printed part!
-//#define DISABLE_INACTIVE_I
-//#define DISABLE_INACTIVE_J
-//#define DISABLE_INACTIVE_K
-//#define DISABLE_INACTIVE_U
-//#define DISABLE_INACTIVE_V
-//#define DISABLE_INACTIVE_W
+#define DEFAULT_STEPPER_TIMEOUT_SEC 120
+#define DISABLE_IDLE_X
+#define DISABLE_IDLE_Y
+#define DISABLE_IDLE_Z    // Disable if the nozzle could fall onto your printed part!
+//#define DISABLE_IDLE_I
+//#define DISABLE_IDLE_J
+//#define DISABLE_IDLE_K
+//#define DISABLE_IDLE_U
+//#define DISABLE_IDLE_V
+//#define DISABLE_IDLE_W
+#define DISABLE_IDLE_E    // Shut down all idle extruders
 
 // Default Minimum Feedrates for printing and travel moves
 #define DEFAULT_MINIMUMFEEDRATE             0.0     // (mm/s) Minimum feedrate. Set with M205 S.
@@ -1973,7 +1972,7 @@
 //
 // Specify additional languages for the UI. Default specified by LCD_LANGUAGE.
 //
-#if ANY(DOGLCD, TFT_COLOR_UI, TOUCH_UI_FTDI_EVE, IS_DWIN_MARLINUI)
+#if ANY(DOGLCD, TFT_COLOR_UI, TOUCH_UI_FTDI_EVE, IS_DWIN_MARLINUI, ANYCUBIC_LCD_VYPER)
   //#define LCD_LANGUAGE_2 fr
   //#define LCD_LANGUAGE_3 de
   //#define LCD_LANGUAGE_4 es
@@ -2123,10 +2122,10 @@
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   //#define BABYSTEP_MILLIMETER_UNITS       // Specify BABYSTEP_MULTIPLICATOR_(XY|Z) in mm instead of micro-steps
-  #ifdef BLTOUCH
-    #define BABYSTEP_MULTIPLICATOR_Z  0.5       // (steps or mm) Steps or millimeter distance for each Z babystep
+  #if ENABLED(BLTOUCH)
+    #define BABYSTEP_MULTIPLICATOR_Z  0.5   // (steps or mm) Steps or millimeter distance for each Z babystep
   #else
-    #define BABYSTEP_MULTIPLICATOR_Z  1       // (steps or mm) Steps or millimeter distance for each Z babystep
+    #define BABYSTEP_MULTIPLICATOR_Z  1     // (steps or mm) Steps or millimeter distance for each Z babystep
   #endif
   #define BABYSTEP_MULTIPLICATOR_XY 1       // (steps or mm) Steps or millimeter distance for each XY babystep
 
@@ -2142,11 +2141,15 @@
 
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
-  #ifdef BLTOUCH
-    #define BABYSTEP_ZPROBE_OFFSET
-  #endif          // Combine M851 Z and Babystepping
-  #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-    //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
+  #if ENABLED(BLTOUCH)
+    #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+  #endif
+  //#define BABYSTEP_GLOBAL_Z               // Combine M424 Z and Babystepping
+
+  #if EITHER(BABYSTEP_ZPROBE_OFFSET, BABYSTEP_GLOBAL_Z)
+    #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+      //#define BABYSTEP_HOTEND_Z_OFFSET    // For multiple hotends, babystep relative Z offsets
+    #endif
     //#define BABYSTEP_GFX_OVERLAY          // Enable graphical overlay on Z-offset editor
   #endif
 #endif
@@ -3001,28 +3004,28 @@
    * Override default SPI pins for TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160 drivers here.
    * The default pins can be found in your board's pins file.
    */
-  //#define X_CS_PIN          -1
-  //#define Y_CS_PIN          -1
-  //#define Z_CS_PIN          -1
-  //#define X2_CS_PIN         -1
-  //#define Y2_CS_PIN         -1
-  //#define Z2_CS_PIN         -1
-  //#define Z3_CS_PIN         -1
-  //#define Z4_CS_PIN         -1
-  //#define I_CS_PIN          -1
-  //#define J_CS_PIN          -1
-  //#define K_CS_PIN          -1
-  //#define U_CS_PIN          -1
-  //#define V_CS_PIN          -1
-  //#define W_CS_PIN          -1
-  //#define E0_CS_PIN         -1
-  //#define E1_CS_PIN         -1
-  //#define E2_CS_PIN         -1
-  //#define E3_CS_PIN         -1
-  //#define E4_CS_PIN         -1
-  //#define E5_CS_PIN         -1
-  //#define E6_CS_PIN         -1
-  //#define E7_CS_PIN         -1
+  //#define X_CS_PIN      -1
+  //#define Y_CS_PIN      -1
+  //#define Z_CS_PIN      -1
+  //#define X2_CS_PIN     -1
+  //#define Y2_CS_PIN     -1
+  //#define Z2_CS_PIN     -1
+  //#define Z3_CS_PIN     -1
+  //#define Z4_CS_PIN     -1
+  //#define I_CS_PIN      -1
+  //#define J_CS_PIN      -1
+  //#define K_CS_PIN      -1
+  //#define U_CS_PIN      -1
+  //#define V_CS_PIN      -1
+  //#define W_CS_PIN      -1
+  //#define E0_CS_PIN     -1
+  //#define E1_CS_PIN     -1
+  //#define E2_CS_PIN     -1
+  //#define E3_CS_PIN     -1
+  //#define E4_CS_PIN     -1
+  //#define E5_CS_PIN     -1
+  //#define E6_CS_PIN     -1
+  //#define E7_CS_PIN     -1
 
   /**
    * Software option for SPI driven drivers (TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160).
@@ -3030,9 +3033,9 @@
    * but you can override or define them here.
    */
   //#define TMC_USE_SW_SPI
-  //#define TMC_SW_MOSI       -1
-  //#define TMC_SW_MISO       -1
-  //#define TMC_SW_SCK        -1
+  //#define TMC_SPI_MOSI  -1
+  //#define TMC_SPI_MISO  -1
+  //#define TMC_SPI_SCK   -1
 
   // @section tmc/serial
 
@@ -3517,7 +3520,6 @@
      * - Due to the limited power resolution this is only approximate.
      */
     //#define LASER_POWER_TRAP
-
 
     //
     // Laser I2C Ammeter (High precision INA226 low/high side module)
@@ -4195,30 +4197,29 @@
 
   // Add an LCD menu for MMU2
   //#define MMU2_MENUS
-  #if EITHER(MMU2_MENUS, HAS_PRUSA_MMU2S)
-    // Settings for filament load / unload from the LCD menu.
-    // This is for Průša MK3-style extruders. Customize for your hardware.
-    #define MMU2_FILAMENTCHANGE_EJECT_FEED 80.0
-    #define MMU2_LOAD_TO_NOZZLE_SEQUENCE \
-      {  7.2, 1145 }, \
-      { 14.4,  871 }, \
-      { 36.0, 1393 }, \
-      { 14.4,  871 }, \
-      { 50.0,  198 }
 
-    #define MMU2_RAMMING_SEQUENCE \
-      {   1.0, 1000 }, \
-      {   1.0, 1500 }, \
-      {   2.0, 2000 }, \
-      {   1.5, 3000 }, \
-      {   2.5, 4000 }, \
-      { -15.0, 5000 }, \
-      { -14.0, 1200 }, \
-      {  -6.0,  600 }, \
-      {  10.0,  700 }, \
-      { -10.0,  400 }, \
-      { -50.0, 2000 }
-  #endif
+  // Settings for filament load / unload from the LCD menu.
+  // This is for Průša MK3-style extruders. Customize for your hardware.
+  #define MMU2_FILAMENTCHANGE_EJECT_FEED 80.0
+  #define MMU2_LOAD_TO_NOZZLE_SEQUENCE \
+    {  7.2, 1145 }, \
+    { 14.4,  871 }, \
+    { 36.0, 1393 }, \
+    { 14.4,  871 }, \
+    { 50.0,  198 }
+
+  #define MMU2_RAMMING_SEQUENCE \
+    {   1.0, 1000 }, \
+    {   1.0, 1500 }, \
+    {   2.0, 2000 }, \
+    {   1.5, 3000 }, \
+    {   2.5, 4000 }, \
+    { -15.0, 5000 }, \
+    { -14.0, 1200 }, \
+    {  -6.0,  600 }, \
+    {  10.0,  700 }, \
+    { -10.0,  400 }, \
+    { -50.0, 2000 }
 
   /**
    * Using a sensor like the MMU2S
