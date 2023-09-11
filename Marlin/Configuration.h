@@ -2024,7 +2024,7 @@
  *   leveling in steps so you can manually adjust the Z height at each grid-point.
  *   With an LCD controller the process is guided step-by-step.
  */
-#if EITHER(BLTOUCH, FIX_MOUNTED_PROBE)
+#if ANY(BLTOUCH, FIX_MOUNTED_PROBE)
   //#define AUTO_BED_LEVELING_3POINT
   //#define AUTO_BED_LEVELING_LINEAR
   #define AUTO_BED_LEVELING_BILINEAR
@@ -2102,7 +2102,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #if EITHER(BLTOUCH, FIX_MOUNTED_PROBE)
+  #if ANY(BLTOUCH, FIX_MOUNTED_PROBE)
     #define G26_MESH_VALIDATION   // TGF - mine was disabled
   #endif
   #if ENABLED(G26_MESH_VALIDATION)
@@ -2279,7 +2279,7 @@
  * - Allows Z homing only when XY positions are known and trusted.
  * - If stepper drivers sleep, XY homing may be required again before Z homing.
  */
-#if EITHER(BLTOUCH, FIX_MOUNTED_PROBE)
+#if ANY(BLTOUCH, FIX_MOUNTED_PROBE)
   #define Z_SAFE_HOMING
 #endif
 
