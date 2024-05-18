@@ -176,7 +176,6 @@ namespace LanguageNarrow_de {
   LSTR MSG_HOTEND_OFFSET_A                = _UxGT("2. Düse @");
   LSTR MSG_UBL_DOING_G29                  = _UxGT("G29 ausführen");
   LSTR MSG_UBL_TOOLS                      = _UxGT("UBL-Werkzeuge");
-  LSTR MSG_UBL_LEVEL_BED                  = _UxGT("Unified Bed Leveling");
   LSTR MSG_LCD_TILTING_MESH               = _UxGT("Berührungspunkt");
   LSTR MSG_UBL_TILT_MESH                  = _UxGT("Tilt Mesh");
   LSTR MSG_UBL_TILTING_GRID               = _UxGT("Tilting Grid Size");
@@ -288,9 +287,9 @@ namespace LanguageNarrow_de {
   LSTR MSG_MOVE_E                         = _UxGT("Bewege Extruder");
   LSTR MSG_MOVE_EN                        = _UxGT("Bewege Extruder *");
   LSTR MSG_HOTEND_TOO_COLD                = _UxGT("Hotend zu kalt");
-  LSTR MSG_MOVE_N_MM                      = _UxGT(" $ mm");
-  LSTR MSG_MOVE_N_IN                      = _UxGT(" $ in");
-  LSTR MSG_MOVE_N_DEG                     = _UxGT(" $ ") LCD_STR_DEGREE;
+  LSTR MSG_MOVE_N_MM                      = _UxGT("Bewege $mm");
+  LSTR MSG_MOVE_N_IN                      = _UxGT("Bewege $in");
+  LSTR MSG_MOVE_N_DEG                     = _UxGT("Bewege $") LCD_STR_DEGREE;
   LSTR MSG_SPEED                          = _UxGT("Geschw.");
   LSTR MSG_MESH_Z_OFFSET                  = _UxGT("Bett Z");
   LSTR MSG_NOZZLE                         = _UxGT("Düse");
@@ -329,7 +328,6 @@ namespace LanguageNarrow_de {
   LSTR MSG_PID_AUTOTUNE_FAILED            = _UxGT("PID Autotune fehlge.!");
   LSTR MSG_BAD_HEATER_ID                  = _UxGT("ungültiger Extruder.");
   LSTR MSG_TEMP_TOO_HIGH                  = _UxGT("Temperatur zu hoch.");
-  LSTR MSG_TIMEOUT                        = _UxGT("Timeout");
   LSTR MSG_PID_BAD_HEATER_ID              = _UxGT("Autotune fehlge.! Ungültiger Extruder");
   LSTR MSG_PID_TEMP_TOO_HIGH              = _UxGT("Autotune fehlge.! Temperatur zu hoch.");
   LSTR MSG_PID_TIMEOUT                    = _UxGT("Autotune fehlge.! Timeout.");
