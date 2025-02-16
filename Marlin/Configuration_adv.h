@@ -1971,15 +1971,6 @@
 //#define NO_SD_HOST_DRIVE   // Disable SD Card access over USB (for security).
 
 /**
- * By default the framework is responsible for the shared media I/O.
- * Enable this if you need Marlin to take care of the shared media I/O.
- * Useful if shared media isn't working properly on some boards.
- */
-#if ENABLED(SDSUPPORT) && DISABLED(NO_SD_HOST_DRIVE)
-  //#define DISKIO_HOST_DRIVE
-#endif
-
-/**
  * Additional options for Graphical Displays
  *
  * Use the optimizations here to improve printing performance,
@@ -2308,11 +2299,7 @@
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   //#define BABYSTEP_INVERT_Z               // Enable if Z babysteps should go the other way
   //#define BABYSTEP_MILLIMETER_UNITS       // Specify BABYSTEP_MULTIPLICATOR_(XY|Z) in mm instead of micro-steps
-  #if ENABLED(BLTOUCH)
-    #define BABYSTEP_MULTIPLICATOR_Z  0.5   // (steps or mm) Steps or millimeter distance for each Z babystep
-  #else
-    #define BABYSTEP_MULTIPLICATOR_Z  1     // (steps or mm) Steps or millimeter distance for each Z babystep
-  #endif
+  #define BABYSTEP_MULTIPLICATOR_Z  1       // (steps or mm) Steps or millimeter distance for each Z babystep
   #define BABYSTEP_MULTIPLICATOR_XY 1       // (steps or mm) Steps or millimeter distance for each XY babystep
 
   //#define DOUBLECLICK_FOR_Z_BABYSTEPPING  // Double-click on the Status Screen for Z Babystepping.
@@ -2330,12 +2317,8 @@
   #if ENABLED(BLTOUCH)
     #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #endif
-  //#define BABYSTEP_GLOBAL_Z               // Combine M424 Z and Babystepping
-
-  #if ANY(BABYSTEP_ZPROBE_OFFSET, BABYSTEP_GLOBAL_Z)
-    #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-      //#define BABYSTEP_HOTEND_Z_OFFSET    // For multiple hotends, babystep relative Z offsets
-    #endif
+  #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+    //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
     //#define BABYSTEP_GFX_OVERLAY          // Enable graphical overlay on Z-offset editor
   #endif
 #endif
@@ -4028,7 +4011,6 @@
 #ifdef G0_FEEDRATE
   //#define VARIABLE_G0_FEEDRATE // The G0 feedrate is set by F in G0 motion mode
 #endif
-//#define G0_ANGULAR_FEEDRATE 2700 // (°/min)
 
 /**
  * Startup commands
